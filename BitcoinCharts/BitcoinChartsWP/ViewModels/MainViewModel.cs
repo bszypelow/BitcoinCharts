@@ -2,23 +2,14 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using BitcoinChartsWP.Resources;
+using ReactiveUI;
 
 namespace BitcoinChartsWP.ViewModels
 {
-	public class MainViewModel : INotifyPropertyChanged
+	public class MainViewModel : ReactiveObject
 	{
 		public MainViewModel()
 		{
-		}
-
-		public event PropertyChangedEventHandler PropertyChanged;
-		private void NotifyPropertyChanged(String propertyName)
-		{
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (null != handler)
-			{
-				handler(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 }
