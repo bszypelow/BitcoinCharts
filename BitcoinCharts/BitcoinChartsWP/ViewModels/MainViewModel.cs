@@ -11,6 +11,10 @@ namespace BitcoinChartsWP.ViewModels
 	{
 		public MainViewModel()
 		{
+			new Bitstamp().Subscribe(x =>
+				{
+					return;
+				});
 		}
 	}
 }

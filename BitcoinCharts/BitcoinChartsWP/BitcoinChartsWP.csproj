@@ -162,8 +162,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PusherClient.WP8">
-      <HintPath>..\packages\PusherClient.WP8.0.0.1.0\lib\wp80\PusherClient.WP8.dll</HintPath>
+    <Reference Include="PusherClient.WP8, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PusherClient.WP8.0.1.0-alpha-2\lib\wp80\PusherClient.WP8.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI">
       <HintPath>..\packages\reactiveui-core.5.5.1\lib\Portable-Net45+WinRT45+WP8\ReactiveUI.dll</HintPath>
