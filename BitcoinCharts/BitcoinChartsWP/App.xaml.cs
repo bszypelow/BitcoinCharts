@@ -8,6 +8,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using BitcoinChartsWP.Resources;
 using BitcoinChartsWP.ViewModels;
+using BitcoinChartsWP.Models;
 
 namespace BitcoinChartsWP
 {
@@ -25,7 +26,7 @@ namespace BitcoinChartsWP
 			{
 				// Delay creation of the view model until necessary
 				if (viewModel == null)
-					viewModel = new MainViewModel();
+					viewModel = new MainViewModel(new Bitstamp());
 
 				return viewModel;
 			}

@@ -11,5 +11,6 @@ namespace BitcoinChartsWP.Models
 		public int Id { get; set; }
 		public decimal Amount { get; set; }
 		public decimal Price { get; set; }
+		public DateTimeOffset Timestamp {get;set;}
 	}
 }
