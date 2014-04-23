@@ -14,19 +14,15 @@ namespace BitcoinChartsWP
 {
 	public partial class App : Application
 	{
-		private static MainViewModel viewModel = null;
-
-		/// <summary>
-		/// A static ViewModel used by the views to bind against.
-		/// </summary>
-		/// <returns>The MainViewModel object.</returns>
+		private static MainViewModel viewModel;
 		public static MainViewModel ViewModel
 		{
 			get
 			{
-				// Delay creation of the view model until necessary
 				if (viewModel == null)
+				{
 					viewModel = new MainViewModel(new Bitstamp());
+				}
 
 				return viewModel;
 			}

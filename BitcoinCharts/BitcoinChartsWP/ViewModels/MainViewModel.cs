@@ -9,36 +9,34 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading;
 using System.Reactive.Concurrency;
+using System.Reactive.Subjects;
 
 namespace BitcoinChartsWP.ViewModels
 {
 	public class MainViewModel : ReactiveObject
 	{
-		public ObservableCollection<Candle> Candles { get; set; }
+		public IReactiveDerivedList<Candle> Candles { get; set; }
 
-		public MainViewModel(IObservable<Trade> source)
+		public MainViewModel(IConnectableObservable<Trade> source)
 		{
-			this.Candles = new ObservableCollection<Candle>();
-
-			var scheduler = new HistoricalScheduler(DateTimeOffset.UtcNow.AddHours(-1).AddMinutes(-1));
+			var scheduler = new HistoricalScheduler(DateTimeOffset.UtcNow.AddMinutes(-61));
 			source.Subscribe(t => scheduler.AdvanceTo(t.Timestamp));
 
 			var windows = source
 				.Select(t => t.Price)
 				.Window(TimeSpan.FromMinutes(5), scheduler);
 
-			var candles = windows.Select(w => new
-				{
-					Lo = w.Scan(0m, (min, current) => min > current ? current : min),
-					Hi = w.Scan(0m, (max, current) => max < current ? current : max),
-					Open = w.Take(1),
-					Close = w
-				});
+			var candles = windows
+				.Select(w => new Candle(
+					lo: w.Scan(0m, (min, current) => min > current ? current : min),
+					hi: w.Scan(0m, (max, current) => max < current ? current : max),
+					open: w.Take(1),
+					close: w
+				));
 
-			candles.Subscribe(c =>
-				{
-					this.Candles.Add(new Candle(c.Hi, c.Lo, c.Open, c.Close));
-				});
+			this.Candles = candles.CreateCollection();
+
+			source.Connect();
 		}
 	}
 }

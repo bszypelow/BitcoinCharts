@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BitcoinChartsWP.Models
 {
-	public class Bitstamp : IObservable<Trade>
+	public class Bitstamp : IConnectableObservable<Trade>
 	{
 		private const string Key = "de504dc5763aeef9ff52";
 		private const string TradesChannel = "live_trades";
@@ -22,21 +22,23 @@ namespace BitcoinChartsWP.Models
 
 		private Pusher pusher;
 		private HttpClient httpClient;
-		private Subject<Trade> allTrades = new Subject<Trade>();
+		private ISubject<Trade> all, published;
 
 		public Bitstamp()
 		{
 			this.httpClient = new HttpClient();
 			this.pusher = new Pusher(Key);
+			this.all = new ReplaySubject<Trade>(TimeSpan.FromMinutes(1));
+			this.published = new Subject<Trade>();
 			Init();
 		}
 
 		private async void Init()
 		{
-			var newTrades = await GetRealtimeStream();
-			var historicalTrades = await GetHistoricalStream();
+			var realtime = await GetRealtimeStream();
+			var historical = await GetHistoricalStream();
 
-			historicalTrades.Concat(newTrades).Subscribe(this.allTrades);
+			historical.Concat(realtime).Subscribe(this.all);
 		}
 
 		private async Task<IObservable<Trade>> GetRealtimeStream()
@@ -80,7 +82,12 @@ namespace BitcoinChartsWP.Models
 
 		public IDisposable Subscribe(IObserver<Trade> observer)
 		{
-			return this.allTrades.Subscribe(observer);
+			return this.published.Subscribe(observer);
+		}
+
+		public IDisposable Connect()
+		{
+			return this.all.Subscribe(published);
 		}
 	}
 }
