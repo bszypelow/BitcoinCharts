@@ -9,25 +9,25 @@ namespace BitcoinChartsWP.ViewModels
 {
 	public class Candle : ReactiveObject
 	{
-		private ObservableAsPropertyHelper<decimal> hi;
-		private ObservableAsPropertyHelper<decimal> lo;
-		private ObservableAsPropertyHelper<decimal> open;
-		private ObservableAsPropertyHelper<decimal> close;
+		private ObservableAsPropertyHelper<double> hi;
+		private ObservableAsPropertyHelper<double> lo;
+		private ObservableAsPropertyHelper<double> open;
+		private ObservableAsPropertyHelper<double> close;
 
-		public decimal Hi { get { return hi.Value; } }
-		public decimal Lo { get { return lo.Value; } }
-		public decimal Open { get { return open.Value; } }
-		public decimal Close { get { return close.Value; } }
+		public DateTime Time { get; set; }
+		public double Hi { get { return hi.Value; } set { } } // Empty setter is a workaround for bug in SparrowChart.
+		public double Lo { get { return lo.Value; } set { } }
+		public double Open { get { return open.Value; } set { } }
+		public double Close { get { return close.Value; } set { } }
+		
 
-		public Candle(IObservable<decimal> hi, IObservable<decimal> lo, IObservable<decimal> open, IObservable<decimal> close)
+		public Candle(DateTime time, IObservable<double> hi, IObservable<double> lo, IObservable<double> open, IObservable<double> close)
 		{
-			this.hi = new ObservableAsPropertyHelper<decimal>(hi, v =>
-			{
-				raisePropertyChanged("Hi");
-			});
-			this.lo = new ObservableAsPropertyHelper<decimal>(lo, v => raisePropertyChanged("Lo"));
-			this.open = new ObservableAsPropertyHelper<decimal>(open, v => raisePropertyChanged("Open"));
-			this.close = new ObservableAsPropertyHelper<decimal>(close, v => raisePropertyChanged("Close"));
+			this.Time = time;
+			this.hi = hi.ToProperty(this, c => c.Hi);
+			this.lo = lo.ToProperty(this, c => c.Lo);
+			this.open = open.ToProperty(this, c => c.Open);
+			this.close = close.ToProperty(this, c => c.Close);
 		}
 	}
 }
