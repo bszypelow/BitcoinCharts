@@ -23,13 +23,14 @@ namespace BitcoinChartsWP.ViewModels
 			source.Subscribe(t => scheduler.AdvanceTo(t.Timestamp));
 
 			var windows = source
-				.Select(t => t.Price)
+				.Select(t => (double)t.Price)
 				.Window(TimeSpan.FromMinutes(5), scheduler);
 
 			var candles = windows
 				.Select(w => new Candle(
-					lo: w.Scan(0m, (min, current) => min > current ? current : min),
-					hi: w.Scan(0m, (max, current) => max < current ? current : max),
+					time: new DateTime(scheduler.Clock.Ticks),
+					lo: w.Scan(0.0, (min, current) => min > current ? current : min),
+					hi: w.Scan(0.0, (max, current) => max < current ? current : max),
 					open: w.Take(1),
 					close: w
 				));
