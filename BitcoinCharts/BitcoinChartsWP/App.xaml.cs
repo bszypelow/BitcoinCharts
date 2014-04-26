@@ -14,20 +14,6 @@ namespace BitcoinChartsWP
 {
 	public partial class App : Application
 	{
-		private static MainViewModel viewModel;
-		public static MainViewModel ViewModel
-		{
-			get
-			{
-				if (viewModel == null)
-				{
-					viewModel = new MainViewModel(new Bitstamp());
-				}
-
-				return viewModel;
-			}
-		}
-
 		/// <summary>
 		/// Provides easy access to the root frame of the Phone Application.
 		/// </summary>

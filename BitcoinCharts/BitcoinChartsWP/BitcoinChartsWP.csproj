@@ -164,6 +164,12 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\packages\OxyPlot.Core.2014.1.286.1\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.WP8">
+      <HintPath>..\packages\OxyPlot.WP8.2014.1.286.1\lib\wp80\OxyPlot.WP8.dll</HintPath>
+    </Reference>
     <Reference Include="PusherClient.WP8, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\PusherClient.WP8.0.1.0-alpha-2\lib\wp80\PusherClient.WP8.dll</HintPath>
@@ -176,9 +182,6 @@
     </Reference>
     <Reference Include="ReactiveUI.Xaml">
       <HintPath>..\packages\reactiveui-platforms.5.5.1\lib\WP8\ReactiveUI.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Sparrow.Chart.WP8.45">
-      <HintPath>..\packages\Sparrow.Chart.WP8.13.1.0.113\lib\windowsphone8\Sparrow.Chart.WP8.45.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.19\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>

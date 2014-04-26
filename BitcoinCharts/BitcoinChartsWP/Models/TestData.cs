@@ -11,7 +11,7 @@ namespace BitcoinChartsWP.Models
 {
 	public class TestData
 	{
-		public IConnectableObservable<Trade> Create()
+		public static IConnectableObservable<Trade> Create()
 		{
 			return Observable.Generate(
 					new Random(),
