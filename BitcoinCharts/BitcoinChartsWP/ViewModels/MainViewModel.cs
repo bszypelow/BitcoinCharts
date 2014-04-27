@@ -13,6 +13,8 @@ using System.Reactive.Subjects;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace BitcoinChartsWP.ViewModels
 {
@@ -26,19 +28,17 @@ namespace BitcoinChartsWP.ViewModels
 		{
 			var scheduler = new HistoricalScheduler(DateTimeOffset.UtcNow.AddMinutes(-61));
 			source.Subscribe(t => scheduler.AdvanceTo(t.Timestamp));
-
-			var candles = source
+			
+			this.Candles = source
 				.Select(t => (double)t.Price)
-				.Window(TimeSpan.FromMinutes(3), scheduler)
+				.Window(TimeSpan.FromMinutes(5), scheduler)
 				.Select(w => new Candle(
 					time: new DateTime(scheduler.Clock.Ticks),
 					lo: w.Scan(double.MaxValue, (min, current) => min > current ? current : min),
 					hi: w.Scan(double.MinValue, (max, current) => max < current ? current : max),
 					open: w.Take(1),
-					close: w
-				));
-
-			this.Candles = candles.ObserveOnDispatcher().CreateCollection();
+					close: w))
+				.CreateCollection();
 
 			this.Chart = new PlotModel();
 			this.Chart.Axes.Add(new DateTimeAxis { StringFormat = "hh:mm" });
@@ -51,14 +51,15 @@ namespace BitcoinChartsWP.ViewModels
 				DataFieldLow = "Lo",
 				DataFieldOpen = "Open",
 				DataFieldClose = "Close",
-				CandleWidth = 10,
+				CandleWidth = 12,
+				StrokeThickness= 3,
 				IncreasingFill = OxyColors.DarkGreen,
 				DecreasingFill = OxyColors.Red,
+				Color = OxyColors.Black
 			});
 
 			source
-				.Sample(TimeSpan.FromSeconds(0.2))
-				.DistinctUntilChanged(t => t.Price)
+				.Sample(TimeSpan.FromSeconds(0.5))
 				.Subscribe(p => this.Chart.InvalidatePlot(updateData: true));
 
 			source.Connect();

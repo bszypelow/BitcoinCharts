@@ -1,14 +1,12 @@
 ﻿using Newtonsoft.Json;
 using PusherClient;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BitcoinChartsWP.Models
@@ -52,8 +50,8 @@ namespace BitcoinChartsWP.Models
 					{
 						observer.OnNext(new Trade
 							{
-								Amount = (decimal)data.amount,
-								Price = (decimal)data.price,
+								Amount = (double)data.amount,
+								Price = (double)data.price,
 								Timestamp = DateTimeOffset.UtcNow
 							});
 					});
@@ -65,7 +63,7 @@ namespace BitcoinChartsWP.Models
 		private async Task<IObservable<Trade>> GetHistoricalStream()
 		{
 			string json = await this.httpClient.GetStringAsync(TradingHistory);
-			var template = new[] { new { tid = 0, date = 0L, price = 0m, amount = 0m } };
+			var template = new[] { new { tid = 0, date = 0L, price = 0.0, amount = 0.0 } };
 			var previousTrades = JsonConvert.DeserializeAnonymousType(json, template);
 
 			return previousTrades
@@ -87,7 +85,7 @@ namespace BitcoinChartsWP.Models
 
 		public IDisposable Connect()
 		{
-			return this.all.Subscribe(published);
+			return this.all.SubscribeOn(ThreadPoolScheduler.Instance).Subscribe(published);
 		}
 	}
 }

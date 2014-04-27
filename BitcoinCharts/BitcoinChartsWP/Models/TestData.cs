@@ -17,12 +17,13 @@ namespace BitcoinChartsWP.Models
 					new Random(),
 					r => true,
 					r => r,
-					r => r.NextDouble() - 0.48,
-					r => TimeSpan.FromMilliseconds(200))
+					r => r.NextDouble() - 0.49,
+					r => TimeSpan.FromMilliseconds(20))
+				.Scan((acc,curr) => acc+curr)
 				.Select(v => new Trade
 				{
 					Amount = 1,
-					Price = (decimal)v,
+					Price = (double)v,
 					Timestamp = DateTime.Now
 				})
 				.Publish();
