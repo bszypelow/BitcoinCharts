@@ -1,14 +1,11 @@
-﻿using System;
+﻿using BitcoinChartsWP.Resources;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using System;
 using System.Diagnostics;
-using System.Resources;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using BitcoinChartsWP.Resources;
-using BitcoinChartsWP.ViewModels;
-using BitcoinChartsWP.Models;
 
 namespace BitcoinChartsWP
 {

@@ -10,7 +10,6 @@
 
 namespace BitcoinChartsWP.Resources
 {
-	using System;
 
 
 	/// <summary>

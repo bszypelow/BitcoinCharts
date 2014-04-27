@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using BitcoinChartsWP.Resources;
-using ReactiveUI;
-using BitcoinChartsWP.Models;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Reactive.Threading;
-using System.Reactive.Concurrency;
-using System.Reactive.Subjects;
+﻿using BitcoinChartsWP.Models;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System.Diagnostics;
-using System.Collections.Generic;
+using ReactiveUI;
+using System;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace BitcoinChartsWP.ViewModels
 {
