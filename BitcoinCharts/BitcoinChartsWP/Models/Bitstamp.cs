@@ -85,7 +85,7 @@ namespace BitcoinChartsWP.Models
 
 		public IDisposable Connect()
 		{
-			return this.all.SubscribeOn(ThreadPoolScheduler.Instance).Subscribe(published);
+			return this.all.Subscribe(published);
 		}
 	}
 }

@@ -16,7 +16,6 @@ namespace BitcoinChartsWP.ViewModels
 		public double Open { get { return open.Value; } }
 		public double Close { get { return close.Value; } }
 		
-
 		public Candle(DateTime time, IObservable<double> hi, IObservable<double> lo, IObservable<double> open, IObservable<double> close)
 		{
 			this.Time = time;

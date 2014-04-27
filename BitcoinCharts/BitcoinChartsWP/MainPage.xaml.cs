@@ -10,6 +10,8 @@ namespace BitcoinChartsWP
 		{
 			InitializeComponent();
 			DataContext = new MainViewModel(new Bitstamp());
+
+			//DataContext = new MainViewModel(TestData.Create());
 		}
 	}
 }
