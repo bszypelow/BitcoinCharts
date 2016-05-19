@@ -25,7 +25,8 @@
             <TextBlock Text="Bitstamp" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
-        <TextBlock Text="{Binding LastPrice}" Foreground="{Binding Trend}" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="343,63,0,28"/>
+        <TextBlock Text="{Binding LastPrice}" Foreground="{Binding Trend}" 
+                   Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="343,63,0,28"/>
 
         <ox:Plot Model="{Binding Chart}" Background="Black" Grid.Row="1"/>
 

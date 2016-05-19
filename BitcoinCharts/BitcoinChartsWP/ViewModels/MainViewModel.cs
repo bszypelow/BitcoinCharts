@@ -17,10 +17,10 @@ namespace BitcoinChartsWP.ViewModels
 		private static readonly Brush RedBrush = new SolidColorBrush(Colors.Red);
 
 		private ObservableAsPropertyHelper<double> lastPrice;
-		public double LastPrice { get { return this.lastPrice.Value; } }
+		public double LastPrice => this.lastPrice.Value;
 
 		private ObservableAsPropertyHelper<Brush> trend;
-		public Brush Trend { get { return this.trend.Value; } }
+		public Brush Trend => this.trend.Value;
 
 		public PlotModel Chart { get; set; }
 
@@ -39,23 +39,24 @@ namespace BitcoinChartsWP.ViewModels
 				.DistinctUntilChanged()
 				.Buffer(2, 1)
 				.Sample(TimeSpan.FromSeconds(0.2))
+				.ObserveOnDispatcher()
 				.Select(b => b[0] < b[1] ? GreenBrush : RedBrush)
 				.ToProperty(this, t => t.Trend);
 
-			var scheduler = new HistoricalScheduler(DateTimeOffset.UtcNow.AddMinutes(-61));
-			source.Subscribe(t => scheduler.AdvanceTo(t.Timestamp));
+			var tardis = new HistoricalScheduler(DateTimeOffset.UtcNow.AddMinutes(-61));
+			source.Subscribe(t => tardis.AdvanceTo(t.Timestamp));
 
 			this.Candles = prices
-				.Window(TimeSpan.FromMinutes(5), scheduler)
+				.Window(TimeSpan.FromMinutes(5), tardis)
 				.Select(w => new Candle(
-					lo: w.Scan(double.MaxValue, (min, current) => min > current ? current : min),
-					hi: w.Scan(double.MinValue, (max, current) => max < current ? current : max),
+					lo: w.Scan(double.MaxValue, (min, current) => Math.Min(min, current)),
+					hi: w.Scan(double.MinValue, (max, current) => Math.Max(max, current)),
 					open: w.Take(1),
 					close: w,
-					time: new DateTime(scheduler.Clock.Ticks)))
+					time: new DateTime(tardis.Clock.Ticks)))
 				.CreateCollection();
 
-			this.Chart = new PlotModel { PlotAreaBackground = OxyColors.Black, PlotAreaBorderThickness = 0 };
+			this.Chart = new PlotModel { PlotAreaBackground = OxyColors.Black, PlotAreaBorderThickness = new OxyThickness(1) };
 			this.Chart.Axes.Add(new DateTimeAxis { StringFormat = "hh:mm", AxislineStyle = LineStyle.Solid, AxislineColor = OxyColors.White, AxislineThickness = 1, TextColor = OxyColors.White, TicklineColor = OxyColors.White });
 			this.Chart.Axes.Add(new LinearAxis { AxislineStyle = LineStyle.Solid, AxislineColor = OxyColors.White, AxislineThickness = 1, TextColor = OxyColors.White, TicklineColor = OxyColors.White, MajorGridlineColor = OxyColors.Gray, MajorGridlineStyle = LineStyle.Dash });
 			this.Chart.Series.Add(new CandleStickSeries
